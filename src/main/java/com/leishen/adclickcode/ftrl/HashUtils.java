@@ -2,7 +2,7 @@ package com.leishen.adclickcode.ftrl;
 
 
 
-public class MyHash {
+public class HashUtils {
 public static int hash(String data){
 	int t = 0;
 	int length = data.length();
