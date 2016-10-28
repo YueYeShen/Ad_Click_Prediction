@@ -1,7 +1,7 @@
-package com.leishen.adclickcode
+package com.leishen.adclickcode.join
 
 import org.apache.spark.sql.SQLContext
-import org.apache.spark.{SparkContext, SparkConf}
+import org.apache.spark.{SparkConf, SparkContext}
 
 /**
   * Created by shenlei on 2016/10/28.

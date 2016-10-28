@@ -1,4 +1,4 @@
-package com.leishen.adclickcode
+package com.leishen.adclickcode.join
 
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.{SparkConf, SparkContext}
