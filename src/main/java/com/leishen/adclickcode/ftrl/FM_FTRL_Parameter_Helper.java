@@ -3,7 +3,7 @@ package com.leishen.adclickcode.ftrl;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FM_Parameter_Helper {
+public class FM_FTRL_Parameter_Helper {
 	 int fm_dim = 4; 
 	 float fm_initDev;
 	 String hashSalt = "salty"; //hash的时候加上这个来hash
@@ -78,11 +78,11 @@ public class FM_Parameter_Helper {
 		this.beta_fm = beta_fm;
 	}
 
-	public int getD() {
+	public int getHashSize() {
 		return D;
 	}
 
-	public void setD(int d) {
+	public void setHashSize(int d) {
 		D = d;
 	}
 
@@ -137,7 +137,7 @@ public class FM_Parameter_Helper {
 	
 	
 	//初始化每个参数的值，可以先使用下面的函数修改
-	public FM_Parameter_Helper(){
+	public FM_FTRL_Parameter_Helper(){
 		fm_dim = 4;
 		fm_initDev = 0.01f;
 		String hashSalt = "salty";
@@ -160,7 +160,7 @@ public class FM_Parameter_Helper {
 	}
 	
 	//将每个参数装进集合中
-	public  List<Object> getparameterList(){
+	public  List<Object> getParameterList(){
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(alpha);
         parameterList.add(beta);

@@ -101,7 +101,7 @@ public class FM_FTRL_machine {
             double[] valuez = new double[this.fm_dim];
             double[] valuew = new double[this.fm_dim];
             for (double s : valuen) {
-                System.out.println("this is zhou jie lun " + s);
+                //System.out.println("this is zhou jie lun " + s);
             }
             this.n_fm.put(i, valuen);
             this.z_fm.put(i, valuez);
@@ -182,20 +182,20 @@ public class FM_FTRL_machine {
 
             raw_y += this.w[index];
         }
-        System.out.println("this is raw 0 " + raw_y);
+        //System.out.println("this is raw 0 " + raw_y);
         for (int index : dataIndexs) {
             this.init_FM(index);
             for (int index_fm_dim = 0; index_fm_dim < this.fm_dim; index_fm_dim++) {
                 int sign = z_fm.get(index)[index_fm_dim] < 0 ? -1 : 1;
-                System.out.println("this sign " + sign);
+                //System.out.println("this sign " + sign);
                 if (sign * z_fm.get(index)[index_fm_dim] <= this.L1_fm) {
                     w_fm.get(index)[index_fm_dim] = 0;
-                    System.out.println("this is w_fm " + w_fm.get(index)[index_fm_dim]);
+                    //System.out.println("this is w_fm " + w_fm.get(index)[index_fm_dim]);
                 } else {
                     w_fm.get(index)[index_fm_dim] = ((sign * this.L1_fm - z_fm.get(index)[index_fm_dim])
                             / ((beta_fm + Math.sqrt(n_fm.get(index)[index_fm_dim])) / (alpha_fm + L2_fm)));
-                    System.out.println("this is chushu " + n_fm.get(index)[index_fm_dim]);
-                    System.out.println("this is w_fm 0  " + w_fm.get(index)[index_fm_dim]);
+                    //System.out.println("this is chushu " + n_fm.get(index)[index_fm_dim]);
+                    //System.out.println("this is w_fm 0  " + w_fm.get(index)[index_fm_dim]);
                 }
 
             }
@@ -204,7 +204,7 @@ public class FM_FTRL_machine {
         for (int length = 0; length < dataIndexs.size(); length++) {
             for (int J = length + 1; J < dataIndexs.size(); J++) {
                 for (int q = 0; q < this.fm_dim; q++) {
-                    //System.out.println("haha "+w_fm.get(dataIndexs.get(length))[q] * w_fm.get(dataIndexs.get(J))[q]);
+                    ////System.out.println("haha "+w_fm.get(dataIndexs.get(length))[q] * w_fm.get(dataIndexs.get(J))[q]);
                     raw_y += w_fm.get(dataIndexs.get(length))[q] * w_fm.get(dataIndexs.get(J))[q];
 
                 }
@@ -271,9 +271,9 @@ public class FM_FTRL_machine {
                 double g_fm = errorValue * fm_sum.get(index)[k];
                 double sigma = (Math.sqrt(n_fm.get(index)[k] + g_fm * g_fm) - Math.sqrt(n_fm.get(index)[k]))
                         / this.alpha_fm;
-                System.out.println("this is sigmahehe  哈哈 " + Math.sqrt(Math.sqrt(n_fm.get(index)[k])));
+                //System.out.println("this is sigmahehe  哈哈 " + Math.sqrt(Math.sqrt(n_fm.get(index)[k])));
 
-                System.out.println("this sigma  value " + (Math.sqrt(n_fm.get(index)[k] + g_fm * g_fm) - Math.sqrt(n_fm.get(index)[k])));
+                //System.out.println("this sigma  value " + (Math.sqrt(n_fm.get(index)[k] + g_fm * g_fm) - Math.sqrt(n_fm.get(index)[k])));
                 this.z_fm.get(index)[k] += g_fm - sigma * w_fm.get(index)[k];
                 this.n_fm.get(index)[k] += g_fm * g_fm;
 
@@ -281,7 +281,7 @@ public class FM_FTRL_machine {
                 BigDecimal c = new BigDecimal(this.n_fm.get(index)[k]);
 
                 this.z_fm.get(index)[k] = b.setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue();
-                System.out.println(this.z_fm.get(index)[k] + "哈哈，我不炒股了，真的");
+                //System.out.println(this.z_fm.get(index)[k] + "哈哈，我不炒股了，真的");
                 this.n_fm.get(index)[k] = c.setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue();
             }
         }
@@ -498,7 +498,7 @@ public class FM_FTRL_machine {
                 }
                 BigDecimal b = new BigDecimal(Math.abs(this.z_fm.get(key)[this.fm_dim - 1]));
                 value = value + b.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
-                System.out.println("this is z_fm keys " + key);
+                //System.out.println("this is z_fm keys " + key);
                 bufferWritter.write(key + "," + value + "\r\n");
 
             }
@@ -590,7 +590,7 @@ public class FM_FTRL_machine {
             n.close();
 
             while ((value = wfm.readLine()) != null) {
-                //System.out.println("this is value "+value);
+                ////System.out.println("this is value "+value);
                 String[] splitValue = value.trim().split(",");
                 this.init_FM(Integer.parseInt(splitValue[0]));
                 for (int zindex = 0; zindex < this.fm_dim; zindex++) {

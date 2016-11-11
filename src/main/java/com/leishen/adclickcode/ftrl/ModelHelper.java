@@ -18,9 +18,9 @@ public class ModelHelper {
 		this.dataList = dataList;
 		this.mature = mature;
 		// 定义零时参数类
-		FM_Parameter_Helper parameter_Helper = new FM_Parameter_Helper();
+		FM_FTRL_Parameter_Helper parameter_Helper = new FM_FTRL_Parameter_Helper();
 		// 初始化学习器，并传入模型的名字和相应参数的列表
-		learner = new FM_FTRL_machine(name, parameter_Helper.getparameterList());
+		learner = new FM_FTRL_machine(name, parameter_Helper.getParameterList());
 
 	}
 

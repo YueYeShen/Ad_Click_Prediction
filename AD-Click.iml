@@ -139,7 +139,6 @@
     <orderEntry type="library" name="Maven: org.spark-project.spark:unused:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.scala-lang:scala-reflect:2.10.6" level="project" />
     <orderEntry type="library" name="Maven: org.apache.spark:spark-mllib_2.10:1.6.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.spark:spark-streaming_2.10:1.6.2" level="project" />
     <orderEntry type="library" name="Maven: org.scalanlp:breeze_2.10:0.11.2" level="project" />
     <orderEntry type="library" name="Maven: org.scalanlp:breeze-macros_2.10:0.11.2" level="project" />
     <orderEntry type="library" name="Maven: org.scalamacros:quasiquotes_2.10:2.0.0-M8" level="project" />
@@ -175,5 +174,6 @@
     <orderEntry type="library" name="Maven: net.sourceforge.f2j:arpack_combined_all:0.1" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.21" level="project" />
     <orderEntry type="library" name="Maven: com.typesafe:config:1.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.spark:spark-streaming_2.10:1.6.1" level="project" />
   </component>
 </module>

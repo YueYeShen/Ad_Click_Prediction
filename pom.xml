@@ -83,7 +83,12 @@
             <artifactId>config</artifactId>
             <version>1.3.0</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-streaming_2.10 -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming_2.10</artifactId>
+            <version>1.6.1</version>
+        </dependency>
     </dependencies>
 
 
