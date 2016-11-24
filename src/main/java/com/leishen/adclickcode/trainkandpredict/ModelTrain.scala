@@ -1,4 +1,4 @@
-package com.leishen.adclickcode.train
+package com.leishen.adclickcode.trainkandpredict
 
 import com.leishen.adclickcode.ftrl.{HashUtils, FM_FTRL_Parameter_Helper, FM_FTRL_machine}
 import org.apache.spark.sql.{Row, SQLContext}
@@ -10,14 +10,14 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
   */
 object ModelTrain {
   def main(args: Array[String]) {
-    val sparkConf = new SparkConf().setAppName("ModelTrain").setMaster("local[4]")
+    val sparkConf = new SparkConf().setAppName("ModelTrain").setMaster("local")
     val sparkContext = new SparkContext(sparkConf)
     val sqlContext = new SQLContext(sparkContext)
 
-    val adClick = sqlContext.read.load("E:\\Kaggle Data\\page_views_sample_join_events_joinAD")
+    val adClick = sqlContext.read.load("S:\\Kaggle Data\\page_views_join_events_joinAD")
       .drop("timestamp").drop("display_id1")
-    adClick.show()
-    val allRows = adClick.rdd.collect()
+
+    val allRows = adClick.rdd.take(1500000)
 
     val learnerParameters = new FM_FTRL_Parameter_Helper
     val learner = new FM_FTRL_machine("Ad_Click", learnerParameters.getParameterList);
@@ -35,8 +35,7 @@ object ModelTrain {
           val hashValues = HashUtils.hashDatas(rowValue, learnerParameters.getHashSize, "kaggle")
           val p = learner.predict(hashValues);
 
-          /* println("label is : "+label)
-           println("predict value is : "+p)*/
+
 
           if (label == 1)
             _1Count = _1Count + 1
@@ -60,10 +59,16 @@ object ModelTrain {
       }
 
     }
-
+    learner.initUseFilePath
     println("allCount Number : " + allRowCount)
     println("correctRowCount : " + correctRowCount)
     println("label 1 : " + _1Count)
+    learner.write_n()
+    learner.write_w()
+    learner.write_z()
+    learner.write_n_fm()
+    learner.write_w_fm()
+    learner.write_z_fm()
   }
 
   private def changeRowToString(row: Row): String = {

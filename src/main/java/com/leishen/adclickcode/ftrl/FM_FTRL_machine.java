@@ -399,6 +399,12 @@ public class FM_FTRL_machine {
 
     public void write_w() {
         File file = new File(this.w_filePath);
+        if(!file.exists())
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         FileWriter fileWritter;
         try {
             fileWritter = new FileWriter(file, true);
@@ -418,6 +424,12 @@ public class FM_FTRL_machine {
 
     public void write_n() {
         File file = new File(this.n_filePath);
+        if(!file.exists())
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         FileWriter fileWritter;
         try {
             fileWritter = new FileWriter(file, true);
@@ -437,6 +449,12 @@ public class FM_FTRL_machine {
 
     public void write_z() {
         File file = new File(this.z_filePath);
+        if(!file.exists())
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         FileWriter fileWritter;
         try {
             fileWritter = new FileWriter(file, true);
@@ -456,6 +474,12 @@ public class FM_FTRL_machine {
 
     public void write_w_fm() {
         File file = new File(this.w_fm_filePath);
+        if(!file.exists())
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         FileWriter fileWritter;
         try {
             fileWritter = new FileWriter(file, true);
@@ -484,6 +508,12 @@ public class FM_FTRL_machine {
 
     public void write_z_fm() {
         File file = new File(this.z_fm_filePath);
+        if(!file.exists())
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         FileWriter fileWritter;
         try {
             fileWritter = new FileWriter(file, true);
@@ -513,6 +543,12 @@ public class FM_FTRL_machine {
 
     public void write_n_fm() {
         File file = new File(this.n_fm_filePath);
+        if(!file.exists())
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         FileWriter fileWritter;
         try {
             fileWritter = new FileWriter(file, true);
@@ -590,7 +626,7 @@ public class FM_FTRL_machine {
             n.close();
 
             while ((value = wfm.readLine()) != null) {
-                ////System.out.println("this is value "+value);
+
                 String[] splitValue = value.trim().split(",");
                 this.init_FM(Integer.parseInt(splitValue[0]));
                 for (int zindex = 0; zindex < this.fm_dim; zindex++) {
