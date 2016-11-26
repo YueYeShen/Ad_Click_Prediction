@@ -147,7 +147,7 @@ public class FM_FTRL_Parameter_Helper {
 		alpha_fm = 0.1f;
 		beta_fm = 1.0f;
 
-		int p_D = 20;
+		int p_D = 24;
 		D = (int)Math.pow(2, p_D);
 
 		L1 = 1.0f;

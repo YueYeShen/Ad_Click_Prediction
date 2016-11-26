@@ -10,7 +10,7 @@ public class ModelHelper {
 	// 模型的成熟度
 	float mature = 0;
 	// 模型训练器
-	FM_FTRL_machine learner = null;
+	FM_FTRL_Machine learner = null;
 
 	// 初始化函数
 	public ModelHelper(String name, List<String> dataList, float mature) {
@@ -20,7 +20,7 @@ public class ModelHelper {
 		// 定义零时参数类
 		FM_FTRL_Parameter_Helper parameter_Helper = new FM_FTRL_Parameter_Helper();
 		// 初始化学习器，并传入模型的名字和相应参数的列表
-		learner = new FM_FTRL_machine(name, parameter_Helper.getParameterList());
+		learner = new FM_FTRL_Machine(name, parameter_Helper.getParameterList());
 
 	}
 

@@ -22,45 +22,45 @@ import org.omg.PortableServer.THREAD_POLICY_ID;
 
 import com.mysql.jdbc.jmx.LoadBalanceConnectionGroupManager;
 
-public class FM_FTRL_machine {
+public class FM_FTRL_Machine {
     String name; // 模型的在线学习类的名称
-    float alpha;
-    float beta;
-    float L1;
-    float L2;
-    float alpha_fm;
-    float beta_fm;
-    float L1_fm;
-    float L2_fm;
-    int fm_dim;
-    float fm_initDev;
-    float dropoutRate;
-    int D; // 初始化的数组的大小
-    int n_epochs; // 循环的次数
+    private float alpha;
+    private float beta;
+    private float L1;
+    private float L2;
+    private float alpha_fm;
+    private float beta_fm;
+    private float L1_fm;
+    private float L2_fm;
+    private int fm_dim;
+    private float fm_initDev;
+    private float dropoutRate;
+    private int D; // 初始化的数组的大小
+    private int n_epochs; // 循环的次数
 
-    double[] n;
-    double[] z;
-    double[] w;
+    private double[] n;
+    private double[] z;
+    private double[] w;
 
-    Map<Integer, double[]> n_fm;
-    Map<Integer, double[]> z_fm;
-    Map<Integer, double[]> w_fm;
+    private Map<Integer, double[]> n_fm;
+    private Map<Integer, double[]> z_fm;
+    private Map<Integer, double[]> w_fm;
 
     // 参数文件
-    String w_filePath;
-    String z_filePath;
-    String n_filePath;
-    String w_fm_filePath;
-    String z_fm_filePath;
-    String n_fm_filePath;
-    String emptyfilePath;
+    private String w_filePath;
+    private String z_filePath;
+    private String n_filePath;
+    private String w_fm_filePath;
+    private String z_fm_filePath;
+    private String n_fm_filePath;
+    private String emptyfilePath;
 
 	/*
      * 这是在线学习类的初始化函数, name代表在线学习实例的名称, parameterlist代表在线学习实例所需要的参数
 	 *
 	 */
 
-    public FM_FTRL_machine(String name, List<Object> parameterList) {
+    public FM_FTRL_Machine(String name, List<Object> parameterList) {
         this.alpha = Float.parseFloat(parameterList.get(0).toString());
         this.beta = Float.parseFloat(parameterList.get(1).toString());
         this.L1 = Float.parseFloat(parameterList.get(2).toString());
@@ -100,9 +100,7 @@ public class FM_FTRL_machine {
             double[] valuen = new double[this.fm_dim];
             double[] valuez = new double[this.fm_dim];
             double[] valuew = new double[this.fm_dim];
-            for (double s : valuen) {
-                //System.out.println("this is zhou jie lun " + s);
-            }
+
             this.n_fm.put(i, valuen);
             this.z_fm.put(i, valuez);
             this.w_fm.put(i, valuew);
@@ -182,20 +180,18 @@ public class FM_FTRL_machine {
 
             raw_y += this.w[index];
         }
-        //System.out.println("this is raw 0 " + raw_y);
+
         for (int index : dataIndexs) {
             this.init_FM(index);
             for (int index_fm_dim = 0; index_fm_dim < this.fm_dim; index_fm_dim++) {
                 int sign = z_fm.get(index)[index_fm_dim] < 0 ? -1 : 1;
-                //System.out.println("this sign " + sign);
+
                 if (sign * z_fm.get(index)[index_fm_dim] <= this.L1_fm) {
                     w_fm.get(index)[index_fm_dim] = 0;
-                    //System.out.println("this is w_fm " + w_fm.get(index)[index_fm_dim]);
+
                 } else {
                     w_fm.get(index)[index_fm_dim] = ((sign * this.L1_fm - z_fm.get(index)[index_fm_dim])
                             / ((beta_fm + Math.sqrt(n_fm.get(index)[index_fm_dim])) / (alpha_fm + L2_fm)));
-                    //System.out.println("this is chushu " + n_fm.get(index)[index_fm_dim]);
-                    //System.out.println("this is w_fm 0  " + w_fm.get(index)[index_fm_dim]);
                 }
 
             }
@@ -204,9 +200,7 @@ public class FM_FTRL_machine {
         for (int length = 0; length < dataIndexs.size(); length++) {
             for (int J = length + 1; J < dataIndexs.size(); J++) {
                 for (int q = 0; q < this.fm_dim; q++) {
-                    ////System.out.println("haha "+w_fm.get(dataIndexs.get(length))[q] * w_fm.get(dataIndexs.get(J))[q]);
                     raw_y += w_fm.get(dataIndexs.get(length))[q] * w_fm.get(dataIndexs.get(J))[q];
-
                 }
             }
         }
@@ -271,9 +265,7 @@ public class FM_FTRL_machine {
                 double g_fm = errorValue * fm_sum.get(index)[k];
                 double sigma = (Math.sqrt(n_fm.get(index)[k] + g_fm * g_fm) - Math.sqrt(n_fm.get(index)[k]))
                         / this.alpha_fm;
-                //System.out.println("this is sigmahehe  哈哈 " + Math.sqrt(Math.sqrt(n_fm.get(index)[k])));
 
-                //System.out.println("this sigma  value " + (Math.sqrt(n_fm.get(index)[k] + g_fm * g_fm) - Math.sqrt(n_fm.get(index)[k])));
                 this.z_fm.get(index)[k] += g_fm - sigma * w_fm.get(index)[k];
                 this.n_fm.get(index)[k] += g_fm * g_fm;
 
@@ -281,7 +273,7 @@ public class FM_FTRL_machine {
                 BigDecimal c = new BigDecimal(this.n_fm.get(index)[k]);
 
                 this.z_fm.get(index)[k] = b.setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue();
-                //System.out.println(this.z_fm.get(index)[k] + "哈哈，我不炒股了，真的");
+
                 this.n_fm.get(index)[k] = c.setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue();
             }
         }
@@ -399,7 +391,7 @@ public class FM_FTRL_machine {
 
     public void write_w() {
         File file = new File(this.w_filePath);
-        if(!file.exists())
+        if (!file.exists())
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -413,7 +405,7 @@ public class FM_FTRL_machine {
                 BigDecimal b = new BigDecimal(this.w[i]);
                 bufferWritter.write(i + "," + b.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue() + "\r\n");
             }
-            // bufferWritter.write(content);
+
             bufferWritter.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -424,7 +416,7 @@ public class FM_FTRL_machine {
 
     public void write_n() {
         File file = new File(this.n_filePath);
-        if(!file.exists())
+        if (!file.exists())
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -438,7 +430,7 @@ public class FM_FTRL_machine {
                 BigDecimal b = new BigDecimal(this.n[i]);
                 bufferWritter.write(i + "," + b.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue() + "\r\n");
             }
-            // bufferWritter.write(content);
+
             bufferWritter.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -449,7 +441,7 @@ public class FM_FTRL_machine {
 
     public void write_z() {
         File file = new File(this.z_filePath);
-        if(!file.exists())
+        if (!file.exists())
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -463,7 +455,7 @@ public class FM_FTRL_machine {
                 BigDecimal b = new BigDecimal(this.z[i]);
                 bufferWritter.write(i + "," + b.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue() + "\r\n");
             }
-            // bufferWritter.write(content);
+
             bufferWritter.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -474,7 +466,7 @@ public class FM_FTRL_machine {
 
     public void write_w_fm() {
         File file = new File(this.w_fm_filePath);
-        if(!file.exists())
+        if (!file.exists())
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -488,8 +480,6 @@ public class FM_FTRL_machine {
                 String value = "";
                 for (int z = 0; z < this.fm_dim - 1; z++) {
                     BigDecimal b = new BigDecimal(Math.abs(this.w_fm.get(key)[z]));
-                    // bufferWritter.write(key+","+b.setScale(3,
-                    // BigDecimal.ROUND_HALF_UP).doubleValue()+"\r\n");
                     value = value + b.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue() + ",";
                 }
                 BigDecimal b = new BigDecimal(Math.abs(this.w_fm.get(key)[this.fm_dim - 1]));
@@ -497,7 +487,7 @@ public class FM_FTRL_machine {
                 bufferWritter.write(key + "," + value + "\r\n");
 
             }
-            // bufferWritter.write(content);
+
             bufferWritter.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -508,7 +498,7 @@ public class FM_FTRL_machine {
 
     public void write_z_fm() {
         File file = new File(this.z_fm_filePath);
-        if(!file.exists())
+        if (!file.exists())
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -522,17 +512,16 @@ public class FM_FTRL_machine {
                 String value = "";
                 for (int z = 0; z < this.fm_dim - 1; z++) {
                     BigDecimal b = new BigDecimal(Math.abs(this.z_fm.get(key)[z]));
-                    // bufferWritter.write(key+","+b.setScale(3,
-                    // BigDecimal.ROUND_HALF_UP).doubleValue()+"\r\n");
+
                     value = value + b.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue() + ",";
                 }
                 BigDecimal b = new BigDecimal(Math.abs(this.z_fm.get(key)[this.fm_dim - 1]));
                 value = value + b.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
-                //System.out.println("this is z_fm keys " + key);
+
                 bufferWritter.write(key + "," + value + "\r\n");
 
             }
-            // bufferWritter.write(content);
+
             bufferWritter.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -543,7 +532,7 @@ public class FM_FTRL_machine {
 
     public void write_n_fm() {
         File file = new File(this.n_fm_filePath);
-        if(!file.exists())
+        if (!file.exists())
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -557,8 +546,7 @@ public class FM_FTRL_machine {
                 String value = "";
                 for (int z = 0; z < this.fm_dim - 1; z++) {
                     BigDecimal b = new BigDecimal(Math.abs(this.n_fm.get(key)[z]));
-                    // bufferWritter.write(key+","+b.setScale(3,
-                    // BigDecimal.ROUND_HALF_UP).doubleValue()+"\r\n");
+
                     value = value + b.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue() + ",";
                 }
                 BigDecimal b = new BigDecimal(Math.abs(this.n_fm.get(key)[this.fm_dim - 1]));
@@ -566,7 +554,7 @@ public class FM_FTRL_machine {
                 bufferWritter.write(key + "," + value + "\r\n");
 
             }
-            // bufferWritter.write(content);
+
             bufferWritter.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block

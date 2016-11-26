@@ -1,8 +1,9 @@
 package com.leishen.adclickcode.trainkandpredict
 
-import com.leishen.adclickcode.ftrl.{HashUtils, FM_FTRL_Parameter_Helper, FM_FTRL_machine}
+import com.leishen.adclickcode.ftrl.{FM_FTRL_Machine, FM_FTRL_Parameter_Helper}
+import com.leishen.adclickcode.utils.HashUtils
 import org.apache.spark.sql.{Row, SQLContext}
-import org.apache.spark.{SparkContext, SparkConf}
+import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 /**
@@ -11,16 +12,19 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 object ModelTrain {
   def main(args: Array[String]) {
     val sparkConf = new SparkConf().setAppName("ModelTrain").setMaster("local")
+    sparkConf.set("spark.local.dir","S:\\Data")
     val sparkContext = new SparkContext(sparkConf)
     val sqlContext = new SQLContext(sparkContext)
 
     val adClick = sqlContext.read.load("S:\\Kaggle Data\\page_views_join_events_joinAD")
       .drop("timestamp").drop("display_id1")
 
-    val allRows = adClick.rdd.take(1500000)
+    val allRows = adClick.rdd.take(6000000)
+
+
 
     val learnerParameters = new FM_FTRL_Parameter_Helper
-    val learner = new FM_FTRL_machine("Ad_Click", learnerParameters.getParameterList);
+    val learner = new FM_FTRL_Machine("Ad_Click", learnerParameters.getParameterList);
     var allRowCount = 0
     var correctRowCount = 0
     var _1Count = 0
