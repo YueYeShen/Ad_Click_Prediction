@@ -23,11 +23,11 @@ public class HashUtils {
     }
 
 
-    public static List<Integer> hashDatas(String data, long hashSize, String halt) {
+    public static List<Integer> hashDatas(String [] allFeature, long hashSize, String halt) {
 
         List<Integer> dataIndexs = new ArrayList<Integer>();
 
-        String[] allFeature = data.trim().split(";");
+
         FM_FTRL_Parameter_Helper parameter_Helper = new FM_FTRL_Parameter_Helper();
         for (String oneData : allFeature) {
             int valueIndex = Math.abs(hash(oneData)) % parameter_Helper.getHashSize() + 1;
