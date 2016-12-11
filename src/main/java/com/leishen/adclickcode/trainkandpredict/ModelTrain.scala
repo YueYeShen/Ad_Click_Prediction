@@ -15,7 +15,6 @@ object ModelTrain {
   def main(args: Array[String]) {
 
 
-
     val trainDataDir = "S:\\Kaggle Data\\trainData\\"
     val learnerParameters = new FM_FTRL_Parameter_Helper
     val learner = new FM_FTRL_Machine("Ad_Click", learnerParameters.getParameterList);
@@ -24,8 +23,10 @@ object ModelTrain {
     var _1Count = 0
     val filePre = "part-000"
     var filePath = ""
+   var ii = 0
+
     for (i <- 0 until 15) {
-      for (j <- 0 to 5) {
+
 
         if (i < 10) {
           filePath = trainDataDir + filePre + "0" + i
@@ -35,18 +36,22 @@ object ModelTrain {
         }
 
         Source.fromFile(filePath).getLines().foreach(line => {
-          val replaceLine = line.replaceAll("\\[", "").replaceAll("\\]", "")
-          val lineSplits = replaceLine.trim.split(",")
-          val label = lineSplits(lineSplits.length - 1).toDouble
-          val datas = for (i <- 0 until lineSplits.length - 1) yield lineSplits(i)
-          val hashValues = HashUtils.hashDatas(datas.toArray, learnerParameters.getHashSize, "kaggle")
-          val p = learner.predict(hashValues);
+          if(ii <20000000) {
+            var replaceLine = line.replaceAll("\\[", "").replaceAll("\\]", "")
+            var lineSplits = replaceLine.trim.split(",")
+            var label = lineSplits(lineSplits.length - 1).toDouble
+            var datas = for (i <- 0 until lineSplits.length - 1) yield lineSplits(i)
+            var hashValues = HashUtils.hashDatas(datas.toArray, learnerParameters.getHashSize, "kaggle")
+            var p = learner.predict(hashValues);
 
-          val loss = learner.logLoss(p, label);
-          learner.update(hashValues, p, label);
+            var loss = learner.logLoss(p, label);
+            learner.update(hashValues, p, label);
+            ii = ii + 1
+            println(ii)
+          }
         }
         )
-      }
+
     }
     learner.initUseFilePath
 
