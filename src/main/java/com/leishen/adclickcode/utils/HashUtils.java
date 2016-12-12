@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HashUtils {
+
+    /**
+     * 对输入的数据进行hash
+     * @param data  输入的字符串
+     * @return hash码
+     */
     public static int hash(String data) {
 
         int length = data.length();

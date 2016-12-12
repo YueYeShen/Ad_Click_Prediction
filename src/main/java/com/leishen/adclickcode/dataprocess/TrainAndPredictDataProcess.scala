@@ -16,8 +16,7 @@ object TrainAndPredictDataProcess {
     val adClick = sqlContext.read.load("S:\\Kaggle Data\\page_views_join_events_joinAD")
       .drop("timestamp").drop("display_id1")
 
-    println(adClick.count())
-
+    /** 进行从新分区，输出到文件中 */
     adClick.rdd.coalesce(15).saveAsTextFile("S:\\Kaggle Data\\trainData")
 
     val pageViewData = sqlContext.read.parquet("S:\\Kaggle Data\\page_views_join_events_joinTestAD")

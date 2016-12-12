@@ -34,9 +34,7 @@ object PredictData {
     val testDataDir = "S:\\Kaggle Data\\testData\\"
     val resultFilePath = "S:\\Ad_Click_Prediction\\Resource\\result.txt"
 
-    var allRowCount = 0
-    var correctRowCount = 0
-    var _1Count = 0
+
     val filePre = "part-000"
     var filePath = new String("")
     var ii = 0
@@ -54,10 +52,10 @@ object PredictData {
 
       Source.fromFile(filePath).getLines().foreach(line => {
         if (ii < 24000000) {
-          var replaceLine = line.replaceAll("\\[", "").replaceAll("\\]", "")
-          var lineSplits = replaceLine.trim.split(",")
-          var hashValues = HashUtils.hashDatas(lineSplits, learnerParameters.getHashSize, "kaggle")
-          var predictValue = learner.predict(hashValues);
+          val replaceLine = line.replaceAll("\\[", "").replaceAll("\\]", "")
+          val lineSplits = replaceLine.trim.split(",")
+          val hashValues = HashUtils.hashDatas(lineSplits, learnerParameters.getHashSize, "kaggle")
+          val predictValue = learner.predict(hashValues);
 
           if (predictValue > 0.4) {
 
@@ -76,37 +74,6 @@ object PredictData {
 
     }
     writer.close()
-    /*
-
-
-
-    val outputMap = new util.HashMap[String, util.HashMap[String, Int]]()
-
-    for(row <- allRows){
-      val rowString = changeRowToString(row)
-
-      val predictValue = learner.predict(HashUtils.hashDatas(rowString, learnerParameters.getHashSize, "kaggle"))
-      if (predictValue > 0.4) {
-        val display_id = row(6).toString
-        val ad_id = row(7).toString
-        if (outputMap.containsKey(display_id)) {
-          val map = outputMap.get(display_id)
-          if (map.containsKey(ad_id)) {
-            map.put(ad_id, map.get(ad_id) + 1)
-          }else{
-            map.put(ad_id,1)
-          }
-        }
-        else{
-          val map = new util.HashMap[String,Int]()
-          map.put(ad_id,1);
-          outputMap.put(display_id,map)
-        }
-      }
-    }
-
-    println(outputMap.size())*/
-
 
   }
 

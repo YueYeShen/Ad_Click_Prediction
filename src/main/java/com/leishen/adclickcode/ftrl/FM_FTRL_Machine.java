@@ -18,6 +18,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.LoggingMXBean;
 
+import com.leishen.adclickcode.utils.FileUtils;
 import org.omg.PortableServer.THREAD_POLICY_ID;
 
 import com.mysql.jdbc.jmx.LoadBalanceConnectionGroupManager;
@@ -212,12 +213,6 @@ public class FM_FTRL_Machine {
 
     public void update(List<Integer> dataIndexs, double p, double y) {
 
-        double[] z_array = this.z;
-
-        Map<Integer, double[]> n_fm_map = this.n_fm;
-        Map<Integer, double[]> w_fm_map = this.w_fm;
-        Map<Integer, double[]> z_fm_map = this.z_fm;
-
         double errorValue = 0;
         Map<Integer, double[]> fm_sum = new HashMap<Integer, double[]>();
         // 异常数据预测值和实际值得误差，因为异常数据很少，所以权重给大一点
@@ -280,17 +275,7 @@ public class FM_FTRL_Machine {
 
     }
 
-    private void createFile(String filePath) {
-        File newFile = new File(filePath);
-        if (!newFile.exists()) {
-            try {
-                newFile.createNewFile();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
+
 
     public void emptyFile() {
         File w_file = new File(this.w_filePath);
@@ -324,13 +309,13 @@ public class FM_FTRL_Machine {
         }
     }
 
-    public void copyFile() {
-        this.createFile(".\\Resource\\" + this.name + "\\n_file_copy.txt");
-        this.createFile(".\\Resource\\" + this.name + "\\w_file_copy.txt");
-        this.createFile(".\\Resource\\" + this.name + "\\z_file_copy.txt");
-        this.createFile(".\\Resource\\" + this.name + "\\n_fm_file_copy.txt");
-        this.createFile(".\\Resource\\" + this.name + "\\z_fm_file_copy.txt");
-        this.createFile(".\\Resource\\" + this.name + "\\w_fm_file_copy.txt");
+    private void copyFile() {
+        FileUtils.createFile(".\\Resource\\" + this.name + "\\n_file_copy.txt");
+        FileUtils.createFile(".\\Resource\\" + this.name + "\\w_file_copy.txt");
+        FileUtils.createFile(".\\Resource\\" + this.name + "\\z_file_copy.txt");
+        FileUtils.createFile(".\\Resource\\" + this.name + "\\n_fm_file_copy.txt");
+        FileUtils.createFile(".\\Resource\\" + this.name + "\\z_fm_file_copy.txt");
+        FileUtils.createFile(".\\Resource\\" + this.name + "\\w_fm_file_copy.txt");
 
         this.copyOneFile(this.n_filePath, ".\\Resource\\" + this.name + "\\n_file_copy.txt");
         this.copyOneFile(this.w_filePath, ".\\Resource\\" + this.name + "\\w_file_copy.txt");
@@ -375,19 +360,6 @@ public class FM_FTRL_Machine {
 
     }
 
-    private void writeString(String filePath, String content) {
-        File file = new File(filePath);
-        FileWriter fileWritter;
-        try {
-            fileWritter = new FileWriter(file, true);
-            BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-            bufferWritter.write(content);
-            bufferWritter.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
 
     public void write_w() {
         File file = new File(this.w_filePath);
@@ -416,21 +388,15 @@ public class FM_FTRL_Machine {
 
     public void write_n() {
         File file = new File(this.n_filePath);
-        if (!file.exists())
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        FileWriter fileWritter;
+        FileUtils.createFile(file);
+        FileWriter fileWriter;
         try {
-            fileWritter = new FileWriter(file, true);
-            BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+            fileWriter = new FileWriter(file, true);
+            BufferedWriter bufferWritter = new BufferedWriter(fileWriter);
             for (int i = 0; i < this.n.length; i++) {
                 BigDecimal b = new BigDecimal(this.n[i]);
                 bufferWritter.write(i + "," + b.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue() + "\r\n");
             }
-
             bufferWritter.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -441,12 +407,7 @@ public class FM_FTRL_Machine {
 
     public void write_z() {
         File file = new File(this.z_filePath);
-        if (!file.exists())
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        FileUtils.createFile(file);
         FileWriter fileWritter;
         try {
             fileWritter = new FileWriter(file, true);
@@ -466,12 +427,7 @@ public class FM_FTRL_Machine {
 
     public void write_w_fm() {
         File file = new File(this.w_fm_filePath);
-        if (!file.exists())
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        FileUtils.createFile(file);
         FileWriter fileWritter;
         try {
             fileWritter = new FileWriter(file, true);
@@ -498,31 +454,25 @@ public class FM_FTRL_Machine {
 
     public void write_z_fm() {
         File file = new File(this.z_fm_filePath);
-        if (!file.exists())
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        FileUtils.createFile(file);
         FileWriter fileWritter;
         try {
             fileWritter = new FileWriter(file, true);
-            BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+            BufferedWriter bufferWriter = new BufferedWriter(fileWritter);
             for (int key : this.z_fm.keySet()) {
                 String value = "";
                 for (int z = 0; z < this.fm_dim - 1; z++) {
                     BigDecimal b = new BigDecimal(Math.abs(this.z_fm.get(key)[z]));
-
                     value = value + b.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue() + ",";
                 }
                 BigDecimal b = new BigDecimal(Math.abs(this.z_fm.get(key)[this.fm_dim - 1]));
                 value = value + b.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
 
-                bufferWritter.write(key + "," + value + "\r\n");
+                bufferWriter.write(key + "," + value + "\r\n");
 
             }
 
-            bufferWritter.close();
+            bufferWriter.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -532,16 +482,11 @@ public class FM_FTRL_Machine {
 
     public void write_n_fm() {
         File file = new File(this.n_fm_filePath);
-        if (!file.exists())
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        FileWriter fileWritter;
+        FileUtils.createFile(file);
+        FileWriter fileWriter;
         try {
-            fileWritter = new FileWriter(file, true);
-            BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+            fileWriter = new FileWriter(file, true);
+            BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
             for (int key : this.n_fm.keySet()) {
                 String value = "";
                 for (int z = 0; z < this.fm_dim - 1; z++) {
@@ -551,11 +496,11 @@ public class FM_FTRL_Machine {
                 }
                 BigDecimal b = new BigDecimal(Math.abs(this.n_fm.get(key)[this.fm_dim - 1]));
                 value = value + b.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
-                bufferWritter.write(key + "," + value + "\r\n");
+                bufferWriter.write(key + "," + value + "\r\n");
 
             }
 
-            bufferWritter.close();
+            bufferWriter.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
