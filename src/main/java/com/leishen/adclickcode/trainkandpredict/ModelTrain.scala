@@ -23,7 +23,7 @@ object ModelTrain {
     var filePath = ""
     var ii = 0
 
-    for (i <- 0 until 15) {
+  /*  for (i <- 0 until 15) {
 
       if (i < 10) {
         filePath = trainDataDir + filePre + "0" + i
@@ -33,7 +33,7 @@ object ModelTrain {
       }
 
       Source.fromFile(filePath).getLines().foreach(line => {
-        if (ii < 20000000) {
+        if (ii < 40000000) {
           val replaceLine = line.replaceAll("\\[", "").replaceAll("\\]", "")
           val lineSplits = replaceLine.trim.split(",")
           val label = lineSplits(lineSplits.length - 1).toDouble
@@ -47,7 +47,31 @@ object ModelTrain {
         }
       }
       )
+    }*/
+    for (i <- 0 until 6) {
 
+      if (i < 10) {
+        filePath = trainDataDir + filePre + "0" + i
+      }
+      else {
+        filePath = trainDataDir + filePre + i
+      }
+
+      Source.fromFile(filePath).getLines().foreach(line => {
+        if (ii < 40000000) {
+          val replaceLine = line.replaceAll("\\[", "").replaceAll("\\]", "")
+          val lineSplits = replaceLine.trim.split(",")
+          val label = lineSplits(lineSplits.length - 1).toDouble
+          val datas = for (i <- 0 until lineSplits.length - 1) yield lineSplits(i)
+          val hashValues = HashUtils.hashDatas(datas.toArray, learnerParameters.getHashSize, "kaggle")
+          val p = learner.predict(hashValues)
+          val loss = learner.logLoss(p, label)
+          learner.update(hashValues, p, label)
+          ii = ii + 1
+          println(ii)
+        }
+      }
+      )
     }
     learner.initUseFilePath()
     learner.write_n()

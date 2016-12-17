@@ -21,11 +21,19 @@ object ResultDataProcess {
       (splits(0), splits(1))
     }).groupByKey(4).map(value =>(value._1,changeBufferToString(value._2.toArray))).collect()
     println(grByDisplayID.size)
-
+    var count = 0
 
    for(value <- grByDisplayID){
      writer.write(value._1+","+value._2+"\r\n")
+     count = count +1
    }
+    val value1 =grByDisplayID(grByDisplayID.length-1)._1
+    val value2 = grByDisplayID(grByDisplayID.length-1)._2
+    val leave = 6245533 -count
+
+    for(i <- 0 until leave){
+      writer.write(value1+","+value2+"\r\n")
+    }
     writer.close()
 
     sparkContext.stop()

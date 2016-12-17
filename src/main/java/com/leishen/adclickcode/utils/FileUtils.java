@@ -14,9 +14,9 @@ public class FileUtils {
         FileWriter fileWritter;
         try {
             fileWritter = new FileWriter(file, true);
-            BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-            bufferWritter.write(content);
-            bufferWritter.close();
+            BufferedWriter bufferWriter = new BufferedWriter(fileWritter);
+            bufferWriter.write(content);
+            bufferWriter.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

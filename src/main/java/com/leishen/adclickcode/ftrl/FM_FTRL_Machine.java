@@ -172,13 +172,15 @@ public class FM_FTRL_Machine {
         this.w[0] = ((-z[0]) / ((beta + Math.sqrt(n[0])) / alpha));
         raw_y += this.w[0];
         for (int index : dataIndexs) {
-
+            // 符号标志
             int sign = z[index] < 0 ? -1 : 1;
+            //稀疏性
             if (sign * z[index] <= L1)
                 this.w[index] = 0;
             else
-                this.w[index] = (sign * L1 - z[(int) index]) / ((beta + Math.sqrt(n[(int) index])) / alpha + L2);
+                this.w[index] = (sign * L1 - z[ index]) / ((beta + Math.sqrt(n[ index])) / alpha + L2);
 
+            //预测值
             raw_y += this.w[index];
         }
 
@@ -545,19 +547,19 @@ public class FM_FTRL_Machine {
                 this.w[Integer.parseInt(splitValue[0])] = Float.parseFloat(splitValue[1]);
             }
             w.close();
-
+            System.out.println("w");
             while ((value = z.readLine()) != null) {
                 String[] splitValue = value.trim().split(",");
                 this.z[Integer.parseInt(splitValue[0])] = Float.parseFloat(splitValue[1]);
             }
             z.close();
-
+            System.out.println("z");
             while ((value = n.readLine()) != null) {
                 String[] splitValue = value.trim().split(",");
                 this.n[Integer.parseInt(splitValue[0])] = Float.parseFloat(splitValue[1]);
             }
             n.close();
-
+            System.out.println("n");
             while ((value = wfm.readLine()) != null) {
 
                 String[] splitValue = value.trim().split(",");
@@ -568,7 +570,7 @@ public class FM_FTRL_Machine {
 
             }
             wfm.close();
-
+            System.out.println("w_fm");
             while ((value = zfm.readLine()) != null) {
                 String[] splitValue = value.trim().split(",");
                 for (int zindex = 0; zindex < this.fm_dim; zindex++) {
@@ -578,7 +580,7 @@ public class FM_FTRL_Machine {
 
             }
             zfm.close();
-
+            System.out.println("z_fm");
             while ((value = nfm.readLine()) != null) {
                 String[] splitValue = value.trim().split(",");
                 for (int zindex = 0; zindex < this.fm_dim; zindex++) {
@@ -587,7 +589,7 @@ public class FM_FTRL_Machine {
 
             }
             nfm.close();
-
+            System.out.println("all is ok");
 
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
